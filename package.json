@@ -7,9 +7,22 @@
     "express": "^4.9.8",
     "home-controller": "^0.5.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "chai": "^1.9.2",
+    "extend": "^2.0.0",
+    "gulp": "^3.8.9",
+    "gulp-jshint": "^1.8.5",
+    "gulp-mocha": "^1.1.1",
+    "gulp-nodemon": "^1.0.4",
+    "gulp-util": "^3.0.1",
+    "proxyquire": "^1.0.1",
+    "q": "^1.0.1",
+    "request": "^2.47.0",
+    "sinon": "^1.11.1"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "gulp develop",
+    "test": "gulp mocha"
   },
   "repository": {
     "type": "git",
