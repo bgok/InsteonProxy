@@ -41,16 +41,11 @@ app.get('/light/:id/:action', function(req, res){
         case 'dim':
             actionPromise = deviceHandle.dim();
             break;
-        case 'level':
-            actionPromise = deviceHandle.level();
-            break;
     }
 
     if (actionPromise) {
         actionPromise.then(function (status) {
-            console.log('status: ', status);
             if (status.response) {
-
                 res.status(200).json(status.response).end();
             } else {
                 res.status(404).json({
@@ -69,25 +64,23 @@ app.get('/light/:id/:action', function(req, res){
     }
 });
 
-module.exports = {};
-
 hub.connect(process.env.HUB_IP, function () {
-    module.exports.server = app.listen(3000);
+    app.listen(3000);
 });
 
+module.exports = app;
 
-
-var desklamp = hub.light('2c5fd1');
-
-function log(event) {
-    return function() {
-        util.log(util.format('%s: %j', event, arguments));
-    };
-}
-
-desklamp.on('turnOn', log('turnOn'));
-desklamp.on('turnOnFast', log('turnOnFast'));
-desklamp.on('brightened', log('brightened'));
-desklamp.on('turnOff', log('turnOff'));
-desklamp.on('turnOffFast', log('turnOffFast'));
-desklamp.on('dimmed', log('dimmed'));
+//var desklamp = hub.light('2c5fd1');
+//
+//function log(event) {
+//    return function() {
+//        util.log(util.format('%s: %j', event, arguments));
+//    };
+//}
+//
+//desklamp.on('turnOn', log('turnOn'));
+//desklamp.on('turnOnFast', log('turnOnFast'));
+//desklamp.on('brightened', log('brightened'));
+//desklamp.on('turnOff', log('turnOff'));
+//desklamp.on('turnOffFast', log('turnOffFast'));
+//desklamp.on('dimmed', log('dimmed'));
