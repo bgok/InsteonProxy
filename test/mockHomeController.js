@@ -8,6 +8,10 @@ var deviceList = [
 var actionResponse = {
     response: {id: '1'}
 };
+var levelResponse = "50";
+var rampRateResponse = "1000";
+var onLevelResponse = "75";
+
 var lightActions = {
     turnOff: sinon.stub().returns(q(actionResponse)),
     turnOn: sinon.stub().returns(q(actionResponse)),
@@ -15,7 +19,10 @@ var lightActions = {
     turnOnFast: sinon.stub().returns(q(actionResponse)),
     brighten: sinon.stub().returns(q(actionResponse)),
     dim: sinon.stub().returns(q(actionResponse)),
-    on: sinon.stub()
+    on: sinon.stub(),
+    level: sinon.stub().returns(q(levelResponse)),
+    rampRate: sinon.stub().returns(q(rampRateResponse)),
+    onLevel: sinon.stub().returns(q(onLevelResponse))
 };
 
 var mockInsteonClass = {
@@ -46,10 +53,16 @@ module.exports = {
         lightActions.turnOnFast.reset();
         lightActions.brighten.reset();
         lightActions.dim.reset();
+        lightActions.level.reset();
+        lightActions.rampRate.reset();
+        lightActions.onLevel.reset();
     },
     $data: {
         deviceList: deviceList,
-        actionResponse: actionResponse
+        actionResponse: actionResponse,
+        levelResponse: levelResponse,
+        rampRateResponse:rampRateResponse,
+        onLevelResponse:onLevelResponse
     }
 
 };

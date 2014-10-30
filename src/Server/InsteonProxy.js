@@ -20,7 +20,7 @@ app.get('/light/:id/:action', function(req, res){
     var id = req.params.id,
         action = req.params.action,
         deviceHandle = hub.light(id),
-        actionPromise;
+        actionPromise, statusFieldName;
 
     switch (action) {
         case 'on':
@@ -41,12 +41,28 @@ app.get('/light/:id/:action', function(req, res){
         case 'dim':
             actionPromise = deviceHandle.dim();
             break;
+        case 'level':
+            statusFieldName = 'level';
+            actionPromise = deviceHandle.level();
+            break;
+        case 'rampRate':
+            statusFieldName = 'rampRate';
+            actionPromise = deviceHandle.rampRate();
+            break;
+        case 'onLevel':
+            statusFieldName = 'onLevel';
+            actionPromise = deviceHandle.onLevel();
+            break;
     }
 
     if (actionPromise) {
         actionPromise.then(function (status) {
             if (status.response) {
                 res.status(200).json(status.response).end();
+            } else if (status) {
+                var returnValue = {};
+                returnValue[statusFieldName] = status;
+                res.status(200).json(returnValue).end();
             } else {
                 res.status(404).json({
                     error: {
