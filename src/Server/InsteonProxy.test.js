@@ -1,7 +1,7 @@
 var request = require('supertest');
 var proxyquire = require('proxyquire').noCallThru();
 var sinon = require('sinon');
-var mockHomeController = require('../test/mockHomeController');
+var mockHomeController = require('../../test/mockHomeController');
 var _ = require('lodash');
 
 _.templateSettings.interpolate = /{{([\s\S]+?)}}/g;
@@ -10,17 +10,13 @@ describe('Server', function () {
     var server;
 
     beforeEach(function () {
-        proxyquire('../src/InsteonProxy.js', {
+        server = proxyquire(__dirname + '/InsteonProxy.js', {
             'home-controller': mockHomeController
         });
     });
 
     afterEach(function() {
         mockHomeController.$reset();
-    });
-
-    beforeEach(function () {
-        server = require('../src/InsteonProxy');
     });
 
     it('should instantiate an Insteon object', function() {
@@ -35,7 +31,7 @@ describe('Server', function () {
     });
 
     describe('/devices endpoint', function () {
-        it('should call the links endpoint of the hub and return a list of devices', function(done) {
+        it('should call the links() endpoint of the hub and return a list of devices', function(done) {
             request(server)
                 .get('/devices')
                 .expect(200, mockHomeController.$data.deviceList)

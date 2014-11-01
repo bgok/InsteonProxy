@@ -5,18 +5,24 @@ var mocha = require('gulp-mocha');
 var gutil = require('gulp-util');
 var nodemon = require('gulp-nodemon');
 var jshint = require('gulp-jshint');
+var bower = require('gulp-bower');
+var karma = require('karma').server;
 
+gulp.task('bower', function () {
+    return bower()
+        .pipe(gulp.dest('lib/'))
+});
 
-gulp.task('mocha', function() {
-    return gulp.src(['test/common.js', 'src/**/*.test.js'], { read: false })
+gulp.task('mocha', function () {
+    return gulp.src(['test/common.js', 'src/Server/**/*.test.js'], { read: false })
         .pipe(mocha({
             reporter: 'spec'
         }))
         .on('error', gutil.log);
 });
 
-gulp.task('watch-mocha', function() {
-    gulp.watch(['src/**/*.js', 'test/*'], ['mocha']);
+gulp.task('watch-mocha', function () {
+    gulp.watch(['src/Server/**/*.js', 'test/*'], ['mocha']);
 });
 
 gulp.task('lint', function () {
@@ -26,7 +32,7 @@ gulp.task('lint', function () {
 
 gulp.task('develop', function () {
     nodemon({
-        script: 'src/InsteonProxy.js',
+        script: 'src/Server/InsteonProxy.js',
         ext: 'html js',
         ignore: 'src/**/*.test.js'
     })
@@ -34,4 +40,18 @@ gulp.task('develop', function () {
         .on('restart', function () {
             console.log('restarted!')
         });
+});
+
+gulp.task('karma', function (done) {
+    karma.start({
+        configFile: __dirname + '/karma.conf.js'
+    }, done);
+});
+
+gulp.task('karma-debug', function (done) {
+    karma.start({
+        configFile: __dirname + '/karma.conf.js',
+        singleRun: false,
+        browsers: ['Chrome']
+    }, done);
 });

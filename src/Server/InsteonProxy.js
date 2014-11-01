@@ -4,6 +4,9 @@ var express = require('express');
 var app = express();
 var util = require('util');
 
+app.use(express.static('src/Client'));
+app.use(express.static('lib'));
+
 app.get('/devices', function(reg, res) {
     hub.links()
         .then(function(deviceList) {
